@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: "Montserrat", sans-serif;
 }
 
 /* Header */
@@ -45,6 +45,7 @@ body {
     width: 100px;
     border-radius: 5px;
     border: none;
+    cursor: pointer;
 }
 
 /*Fim Header */
@@ -76,7 +77,7 @@ body {
 main {
     width: 80%; 
     height: 80%; 
-    margin: auto; 
+    margin: auto;
 }
 
 /* Introdução */
@@ -101,25 +102,24 @@ main {
 /* Fim introdução */
 
 /* modelos */
-
+/* 
 .card {
       background-color: white;
-      max-width: 900px;
+      width: 900px;
       margin: 0 auto;
       padding: 30px;
       border-radius: 16px;
       box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
 
-.card .title {
+.card .titulo {
       font-size: 28px;
       color: #333;
       margin-bottom: 20px;
-      border-bottom: 2px solid #ddd;
       padding-bottom: 10px;
     }
 
-    .images {
+.card .imagens {
       display: flex;
       gap: 20px;
       justify-content: center;
@@ -127,7 +127,7 @@ main {
       flex-wrap: wrap;
     }
 
-    .images img {
+.card .imagens img {
       width: 100%;
       max-width: 400px;
       border-radius: 10px;
@@ -135,23 +135,16 @@ main {
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
-    .info {
+    .informações {
       font-size: 16px;
-      color: #444;
-      line-height: 1.6;
+      color: #222;
     }
 
-    .info ul {
+    .informações ul {
       padding-left: 20px;
     }
 
-    .info li::before {
-      content: "• ";
-      color: #0b6e99;
-      font-weight: bold;
-    }
-
-    .badge {
+    .caracteristicas {
       display: inline-block;
       background-color: #0b6e99;
       color: white;
@@ -159,7 +152,64 @@ main {
       border-radius: 12px;
       font-size: 14px;
       margin-right: 10px;
-    }
+    } */
+
+.modelos {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    width: 900px;
+    padding: 30px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.modelos .container {
+    display: flex;
+    flex-direction: column ;
+}
+
+.modelos .titulo {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+}
+
+.modelos .imagens {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 20px;
+}
+
+.modelos .imagens img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+
+.modelos .informações {
+      font-size: 16px;
+      color: #222;
+}
+
+.modelos .informações ul {
+      padding-left: 20px;
+}
+
+.modelos .caracteristicas {
+      display: inline-block;
+      background-color: #222;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      margin-right: 10px;
+}
 
 /* Fim modelos */
 
