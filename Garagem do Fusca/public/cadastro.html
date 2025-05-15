@@ -10,63 +10,63 @@
 
   <script src="./js/sessao.js"></script>
 
-      <link rel="stylesheet" href="./css/cadastro.css">
+  <link rel="stylesheet" href="./css/cadastro.css">
   <link rel="icon" href="./assets/icon/favicon2.ico" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
 <body>
-  
-    <div class="alerta_erro">
-      <div class="card_erro" id="cardErro">
-        <span id="mensagem_erro"></span>
+
+  <div class="alerta_erro">
+    <div class="card_erro" id="cardErro">
+      <span id="mensagem_erro"></span>
+    </div>
+  </div>
+
+  <div class="login">
+    <div class="container">
+
+      <div class="formulario">
+        <a href="index.html"> <img src="./assets/imgs/logo.png"></a>
+
+        <span class="bem_vindo">Cadastro</span>
+
+        <span class="cadastro">Já tem uma conta? <a href="./login.html">clique aqui</a> </span>
+
+        <div class="campos_formulario">
+          <span class="titulo_input">Nome de usuário</span>
+          <input type="text" id="input_nome" placeholder="@usuario123">
+        </div>
+
+        <div class="campos_formulario">
+          <span class="titulo_input">Email</span>
+          <input type="text" id="input_email" placeholder="usuario@endereço.com">
+        </div>
+
+        <div class="campos_formulario">
+          <span class="titulo_input">Senha</span>
+          <input type="password" id="input_senha" placeholder="********">
+        </div>
+
+        <div class="campos_formulario">
+          <span class="titulo_input">Confirmar senha</span>
+          <input type="password" id="input_confirmar_senha" placeholder="********">
+        </div>
+
+        <button onclick="cadastrar()">Cadastrar</button>
+      </div>
+
+      <div class="video">
+        <video src="./assets/video/video_cadastro.mp4" autoplay loop muted playsinline></video>
       </div>
     </div>
+  </div>
 
-<div class="login">
-            <div class="container">
+  <div id="div_aguardar" class="loading-div">
+    <img src="./assets/circle-loading.gif" id="loading-gif" />
+  </div>
 
-                <div class="formulario">
-                    <img src="./assets/imgs/logo.png" alt="">
-
-                    <span class="bem_vindo">Cadastro</span>
-
-                    <span class="cadastro">Já tem uma conta? <a href="./login.html">clique aqui</a> </span>
-
-                    <div class="campos_formulario">
-                        <span class="titulo_input">Nome</span>
-                        <input type="text" id="input_nome">
-                    </div>
-
-                    <div class="campos_formulario">
-                        <span class="titulo_input">Email</span>
-                        <input type="text" id="input_email">
-                    </div>
-
-                    <div class="campos_formulario">
-                        <span class="titulo_input">Senha</span>
-                        <input type="password" id="input_senha">
-                    </div>
-
-                     <div class="campos_formulario">
-                        <span class="titulo_input">Senha</span>
-                        <input type="password" id="input_confirmar_senha">
-                    </div>
-
-                    <button onclick="cadastrar()">Cadastrar</button>
-                </div>
-
-                <div class="video">
-                    <video src="./assets/video/video_cadastro.mp4" autoplay loop muted playsinline></video>
-                </div>
-            </div>
-        </div>
-
-      <div id="div_aguardar" class="loading-div">
-          <img src="./assets/circle-loading.gif" id="loading-gif" />
-        </div>
-
-        <div id="div_erros_login"></div>
+  <div id="div_erros_login"></div>
 </body>
 
 </html>
@@ -89,7 +89,7 @@
       nomeVar == "" ||
       emailVar == "" ||
       senhaVar == "" ||
-      confirmacaoSenhaVar == "" 
+      confirmacaoSenhaVar == ""
     ) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
