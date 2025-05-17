@@ -1,20 +1,17 @@
 const express = require('express');
+const path = require('path'); // <-- Faltava isso
 const router = express.Router();
-const upload = require('../config/configUpload'); // ARQUIVO COM A CONFIGURAÇÃO DO UPLOAD
-const postcontroler = require('../controllers/postcontroler');
+const upload = require('../config/configUpload');
+const postsController = require('../controllers/postsController');
 
+// Serve o formulário
 router.get("", (req, res) => {
-  res.render("index")
+  res.sendFile(path.join(__dirname, "../../public/postagem_teste.html"));
 });
 
-// upload.single('foto') vai buscar no json alguma propriedade chamada foto 
-router.post('/cadastro', upload.single('foto'), (req, res) => {
-  postcontroler.salvar(req, res);
-});
-
-router.get('/:id', upload.single('foto'), (req, res) => {
-  postcontroler.buscarUsuarioPeloId(req, res);
+// Rota de envio do formulário
+router.post('/cadastro', upload.single('imagem'), (req, res) => {
+  postsController.salvar(req, res);
 });
 
 module.exports = router;
-
