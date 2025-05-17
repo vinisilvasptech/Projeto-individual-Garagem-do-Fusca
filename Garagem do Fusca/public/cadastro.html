@@ -17,12 +17,6 @@
 
 <body>
 
-  <div class="alerta_erro">
-    <div class="card_erro" id="cardErro">
-      <span id="mensagem_erro"></span>
-    </div>
-  </div>
-
   <div class="login">
     <div class="container">
 
@@ -48,6 +42,8 @@
           <input type="password" id="input_senha" placeholder="********">
         </div>
 
+        <div class="div_msg"></div>
+
         <div class="campos_formulario">
           <span class="titulo_input">Confirmar senha</span>
           <input type="password" id="input_confirmar_senha" placeholder="********">
@@ -61,44 +57,112 @@
       </div>
     </div>
   </div>
-
-  <div id="div_aguardar" class="loading-div">
-    <img src="./assets/circle-loading.gif" id="loading-gif" />
-  </div>
-
-  <div id="div_erros_login"></div>
 </body>
 
 </html>
 
 <script>
 
-  function cadastrar() {
-    // aguardar();
 
-    //Recupere o valor da nova input pelo nome do id
-    // Agora vá para o método fetch logo abaixo
+  function verificarSenha() {
+    var senha = input_senha.value;
+    var num = "0123456789";
+    var carEsp = "!@#$%&*().";
+    var verificar_caracter_esp = 0;
+    var verificar_numero = 0;
+    var mensagem = "";
+
+    if (senha.length >= 8) {
+      mensagem += `<span style="color: green;">Tem mais que 8 caracteres</span> <br>`;
+    } else {
+      mensagem += `<span style="color: red;">Tem mais que 8 caracteres</span> <br>`;
+    }
+
+    if (senha != senha.toLowerCase()) {
+      mensagem += `<span style="color: green;">Contém pelo menos 1 caratere maiúsculo</span> <br>`;
+    } else {
+      mensagem += `<span style="color: red;">Contém pelo menos 1 caratere maiúsculo</span> <br>`;
+    }
+
+    for (var j = 0; j < senha.length; j++) {
+      if (carEsp.includes(senha[j])) {
+        verificar_caracter_esp = 1;
+        j = (senha.length) - 1;
+      } else {
+        verificar_caracter_esp = 0;
+      }
+    }
+
+    if (verificar_caracter_esp == 1) {
+      mensagem += `<span style="color: green;">Contém pelo menos 1 caractere especial</span> <br>`;
+    } else {
+      mensagem += `<span style="color: red;">Contém pelo menos 1 caractere especial</span> <br>`;
+    }
+
+    for (var i = 0; i < senha.length; i++) {
+      if (num.includes(senha[i])) {
+        verificar_numero = 1;
+        i = (senha.length) - 1;
+      } else {
+        verificar_numero = 0;
+      }
+    }
+
+    if (verificar_numero == 1) {
+      mensagem += `<span style="color: green;">Contém pelo menos 1 número</span> <br>`;
+    } else {
+      mensagem += `<span style="color: red;">Contém pelo menos 1 número</span> <br>`;
+    }
+
+    if (verificar_numero == 1 && verificar_caracter_esp == 1 && senha.length >= 8 && senha != senha.toLowerCase()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function verificarEmail() {
+    var email = input_email.value;
+    var verify_email;
+
+
+    if (email.includes("@") && (email.endsWith(".com") || email.endsWith(".com.br") || email.endsWith(".org"))) {
+      verify_email = 1;
+    } else {
+      verify_email = 0;
+    }
+
+    if (verify_email == 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function cadastrar() {
     var nomeVar = input_nome.value;
     var emailVar = input_email.value;
     var senhaVar = input_senha.value;
     var confirmacaoSenhaVar = input_confirmar_senha.value;
-    var idEmpresaVincular
 
-    // Verificando se há algum campo em branco
-    if (
-      nomeVar == "" ||
-      emailVar == "" ||
-      senhaVar == "" ||
-      confirmacaoSenhaVar == ""
-    ) {
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
-
-      finalizarAguardar();
+    if (nomeVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "") {
+      alert("Por favor, preencha todos os campos.") ;    
       return false;
-    } else {
-      setInterval(sumirMensagem, 5000);
+    }
+
+    if (!verificarEmail()) {
+      alert("E-mail inválido. Verifique o formato.");    
+      return false;
+    }
+
+    if (!verificarSenha()) {
+      alert("A senha não atende aos requisitos.");    
+      return false;
+    }
+
+    if (senhaVar !== confirmacaoSenhaVar) {
+      alert( "As senhas não coincidem.");    
+      return false;
     }
 
     // Enviando o valor da nova input
@@ -119,31 +183,15 @@
         console.log("resposta: ", resposta);
 
         if (resposta.ok) {
-          cardErro.style.display = "block";
-
-          mensagem_erro.innerHTML =
-            "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
-
+          alert("Cadastro realizado com sucesso! Redirecionando para tela de Login...");
           setTimeout(() => {
             window.location = "login.html";
           }, "2000");
 
-          limparFormulario();
-          finalizarAguardar();
         } else {
           throw "Houve um erro ao tentar realizar o cadastro!";
         }
       })
-      .catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
-        finalizarAguardar();
-      });
-
     return false;
-  }
-
-
-  function sumirMensagem() {
-    cardErro.style.display = "none";
   }
 </script>

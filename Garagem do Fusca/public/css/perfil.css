@@ -1,0 +1,187 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.card-perfil .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    
+}
+
+.card-perfil .card {
+    background-color: #222;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+}
+
+.card-perfil .dados {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 5px;
+    color: #fff;
+}
+
+.card-perfil .dados .nome-usuario {
+    font-size: 30px;
+}
+
+.card-perfil .botoes button {
+    color: #000;
+    width: 80px;
+    height: 25px;
+    background-color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.card-perfil .botoes a {
+    text-decoration: none;
+    color: #000;
+}
+
+.card-perfil .postagens-usuario {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.card-perfil .postagens-usuario a {
+    text-decoration: underline;
+    color: #fff;
+}
+
+.card-perfil .postagens {
+    color: #fff;
+
+}
+
+.postagens2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 30px;
+    padding: 0 20px;
+        cursor: pointer;
+
+}
+
+.post {
+    width: 300px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.post:hover {
+    transform: translateY(-5px);
+}
+
+.post .post-img img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.post-conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 15px;
+    gap: 5px;
+    color: #333;
+    width: 100%;
+}
+
+.post .titulo {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.post .user {
+    color: #666;
+    font-size: 14px;
+}
+
+.post .descricao {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.postagens {
+    color: #fff;
+    text-align: center;
+}
+
+.postagens h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.postagens2 {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: nowrap;
+    padding-bottom: 20px;
+}
+
+.post {
+    background-color: #f9f9f9;
+    color: #000;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+}
+
+.post-img img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.post-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.titulo {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.user {
+    font-size: 14px;
+    color: #444;
+}
+
+.descricao {
+    font-size: 14px;
+}
