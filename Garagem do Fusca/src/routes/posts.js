@@ -1,5 +1,5 @@
 const express = require('express');
-const path = require('path'); // <-- Faltava isso
+const path = require('path');
 const router = express.Router();
 const upload = require('../config/configUpload');
 const postsController = require('../controllers/postsController');

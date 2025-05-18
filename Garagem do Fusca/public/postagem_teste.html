@@ -91,9 +91,6 @@
       <label for="descricao">Descrição</label>
       <input name="descricao" id="descricao" type="text" placeholder="Descrição do post" required />
 
-      <label for="fk_usuario">ID do Usuário</label>
-      <input name="fk_usuario" id="fk_usuario" type="number" placeholder="ID do usuário" required />
-
       <label for="imagem">Imagem</label>
       <input name="imagem" id="imagem" type="file" accept="image/*" onchange="mostrarPreview()" required />
 
@@ -124,8 +121,15 @@
       const formData = new FormData();
       formData.append('titulo', titulo.value);
       formData.append('descricao', descricao.value);
-      formData.append('fk_usuario', fk_usuario.value);
       formData.append('imagem', imagem.files[0]);
+
+      const id_usuario = sessionStorage.ID_USUARIO;
+      if (!id_usuario) {
+        alert("Usuário não autenticado.");
+        return;
+      }
+
+      formData.append('fk_usuario', id_usuario);
 
       fetch("/posts/cadastro", {
         method: "POST",
@@ -135,6 +139,7 @@
         .then(msg => alert(msg))
         .catch(err => console.log(err));
     }
+
   </script>
 </body>
 
