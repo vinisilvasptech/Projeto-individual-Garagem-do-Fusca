@@ -1,146 +1,35 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nova Postagem</title>
-  <style>
-    body {
-      background-color: #f4f4f4;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .form-container {
-      background-color: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      width: 90%;
-      max-width: 400px;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      color: #333;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-
-    label {
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-      color: #444;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="file"] {
-      padding: 0.6rem;
-      margin-bottom: 1.2rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
-    }
-
-    input[type="file"] {
-      padding: 0.4rem;
-    }
-
-    button {
-      padding: 0.8rem;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    #preview {
-      margin-top: 1rem;
-      max-width: 100%;
-      border-radius: 8px;
-      display: none;
-    }
-  </style>
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/comunidade.css">
 </head>
 
 <body>
-  <div class="form-container">
-    <h1>Nova Postagem</h1>
-    <form id="form-post">
+
+  <main>
+
+    <div class="form-posts">
+      <h1>Nova Postagem</h1>
       <label for="titulo">Título</label>
-      <input name="titulo" id="titulo" type="text" placeholder="Título do post" required />
+      <input name="titulo" id="titulo" type="text" placeholder="Título do post" />
 
       <label for="descricao">Descrição</label>
-      <input name="descricao" id="descricao" type="text" placeholder="Descrição do post" required />
+      <input name="descricao" id="descricao" type="text" placeholder="Descrição do post" />
 
       <label for="imagem">Imagem</label>
-      <input name="imagem" id="imagem" type="file" accept="image/*" onchange="mostrarPreview()" required />
+      <input name="imagem" id="imagem" type="file" accept="image/*" onchange="mostrarPreview()" />
 
       <img id="preview" src="#" alt="Preview da imagem" />
 
       <button type="button" onclick="enviar()">Enviar</button>
-    </form>
-  </div>
+    </div>
 
-  <script>
-    function mostrarPreview() {
-      const input = document.getElementById('imagem');
-      const preview = document.getElementById('preview');
+  </main>
 
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-          preview.src = e.target.result;
-          preview.style.display = 'block';
-        }
-
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-
-    function enviar() {
-      const formData = new FormData();
-      formData.append('titulo', titulo.value);
-      formData.append('descricao', descricao.value);
-      formData.append('imagem', imagem.files[0]);
-
-      const id_usuario = sessionStorage.ID_USUARIO;
-      if (!id_usuario) {
-        alert("Usuário não autenticado.");
-        return;
-      }
-
-      formData.append('fk_usuario', id_usuario);
-
-      fetch("/posts/cadastro", {
-        method: "POST",
-        body: formData
-      })
-        .then(res => res.text())
-        .then(msg => alert(msg))
-        .catch(err => console.log(err));
-    }
-
-  </script>
 </body>
 
 </html>

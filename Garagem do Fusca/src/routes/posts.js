@@ -4,9 +4,11 @@ const router = express.Router();
 const upload = require('../config/configUpload');
 const postsController = require('../controllers/postsController');
 
+router.get('/listar', postsController.listar);
+
 // Serve o formulário
 router.get("", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../public/postagem_teste.html"));
+  res.sendFile(path.join(__dirname, "../../public/comunidade.html"));
 });
 
 // Rota de envio do formulário

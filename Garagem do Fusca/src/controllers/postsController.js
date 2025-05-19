@@ -29,4 +29,14 @@ function salvar(req, res) {
     });
 }
 
-module.exports = { salvar };
+function listar(req, res) {
+  postsModel.listar()
+  .then(result => {res.json(result)})
+
+  .catch(erro => {
+    console.error("Erro ao listar postagens", erro);
+    res.status(500).json({erro: "Erros ao listar postagens"})
+  });
+}
+
+module.exports = { salvar, listar};

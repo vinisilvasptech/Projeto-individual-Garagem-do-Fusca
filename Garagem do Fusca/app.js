@@ -17,8 +17,9 @@ var app = express();
 
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
-const postsRouter = require("./src/routes/posts");
+var postsRouter = require("./src/routes/posts");
 
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -28,7 +29,6 @@ app.use(cors());
 app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/posts", postsRouter);
-
 
 app.listen(PORTA_APP, function () {
     console.log(`
