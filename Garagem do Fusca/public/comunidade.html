@@ -5,8 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./css/comunidade.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <title>Nova Postagem</title>
-
 </head>
 
 <body>
@@ -31,7 +31,7 @@
         <input name="imagem" id="imagem" type="file" onchange="mostrarPreview()" />
       </div>
 
-      <img id="preview" src="#" />
+      <img id="preview" src="#" style="display:none;" />
 
       <button type="button" onclick="enviar()">Enviar</button>
     </div>
@@ -51,7 +51,7 @@
         reader.onload = function (e) {
           preview.src = e.target.result;
           preview.style.display = 'block';
-        }
+        };
 
         reader.readAsDataURL(input.files[0]);
       }
@@ -83,39 +83,104 @@
         .catch(err => console.log(err));
     }
 
-    function carregarPostagens() {
-      fetch("/posts/listar")
-        .then(res => res.json())
-        .then(postagens => {
-          const container = document.getElementById("div_msg");
-          container.innerHTML = "";
-
-          for (let i = postagens.length - 1; i >= 0; i--) {
-            const post = postagens[i];
-            container.innerHTML +=
-              `
-      <div class="post" id="post">
-      <h4>@${post.nome}</h4>
-      <div class="post-img">
-        <img src="/public/assets/imgs_postagens/${post.url_imagem}" alt="Imagem do post">
-      </div>
-
-      <span class="titulo">${post.titulo}</span><br>
-      <span class="descricao">${post.descricao}</span><br>
-      <span class="data">${post.dt_postagem}</span>
-
-    </div>   
-              `;
-          }
-        })
-        .catch(err => {
-          console.error("Erro ao carregar postagens:", err);
-        });
+    async function carregarCurtidas(idPostagem) {
+      try {
+        const res = await fetch(`/curtidas/contar/${idPostagem}`);
+        if (!res.ok) throw new Error("Falha ao buscar curtidas");
+        const dados = await res.json();
+        return dados.qtd || 0;
+      } catch (err) {
+        console.error(err);
+        return 0;
+      }
     }
 
-    // Carrega postagens ao abrir a página
+    async function carregarPostagens() {
+      try {
+        const res = await fetch("/posts/listar");
+        const postagens = await res.json();
+        const container = document.getElementById("div_msg");
+        container.innerHTML = "";
+
+        for (let i = postagens.length - 1; i >= 0; i--) {
+          const post = postagens[i];
+          const qtdCurtidas = await carregarCurtidas(post.id);
+
+          container.innerHTML += `
+            <div class="post" id="post-${post.id}">
+              <h4>@${post.nome}</h4>
+              <div class="post-img">
+                <img src="/public/assets/imgs_postagens/${post.url_imagem}" alt="Imagem do post" />
+              </div>
+
+              <button class="botao-curtir" data-id="${post.id}">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+              <span class="qtd-curtidas" id="qtd-curtidas-${post.id}">${qtdCurtidas}</span>
+              <span class="titulo">${post.titulo}</span><br>
+              <span class="descricao">${post.descricao}</span><br>
+              <span class="data">${post.dt_postagem}</span>
+            </div>`;
+        }
+
+        ativarBotoesCurtir();
+      } catch (err) {
+        console.error("Erro ao carregar postagens:", err);
+      }
+    }
+
+    function ativarBotoesCurtir() {
+      const botoes = document.getElementsByClassName('botao-curtir');
+
+      for (let i = 0; i < botoes.length; i++) {
+        botoes[i].addEventListener('click', async function () {
+          const idPostagem = this.getAttribute('data-id');
+          const idUsuario = sessionStorage.ID_USUARIO;
+
+          if (!idUsuario) {
+            alert("Usuário não autenticado.");
+            return;
+          }
+
+          try {
+            const res = await fetch("/curtidas/alternar", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ idUsuario, idPostagem })
+            });
+            if (!res.ok) throw new Error("Erro ao curtir/descurtir");
+
+            // Atualiza ícone
+            const icone = this.querySelector("i");
+            let novaQtd;
+
+            if (icone.classList.contains("fa-regular")) {
+              icone.classList.remove("fa-regular");
+              icone.classList.add("fa-solid");
+              icone.style.color = "red";
+              // Incrementa a contagem
+              novaQtd = parseInt(document.getElementById(`qtd-curtidas-${idPostagem}`).innerText) + 1;
+            } else {
+              icone.classList.remove("fa-solid");
+              icone.classList.add("fa-regular");
+              icone.style.color = "";
+              // Decrementa a contagem
+              novaQtd = parseInt(document.getElementById(`qtd-curtidas-${idPostagem}`).innerText) - 1;
+            }
+
+            // Atualiza o texto da contagem
+            document.getElementById(`qtd-curtidas-${idPostagem}`).innerText = novaQtd;
+
+          } catch (err) {
+            console.error("Erro ao alternar curtida:", err);
+          }
+        });
+      }
+    }
+
     window.onload = carregarPostagens;
   </script>
+
 </body>
 
 </html>

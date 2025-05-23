@@ -6,57 +6,56 @@
 comandos para mysql server
 */
 
-CREATE DATABASE aquatech;
+CREATE DATABASE garagem_do_fusca;
 
-USE aquatech;
-
-CREATE TABLE empresa (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	razao_social VARCHAR(50),
-	cnpj CHAR(14),
-	codigo_ativacao VARCHAR(50)
-);
+USE garagem_do_fusca;
 
 CREATE TABLE usuario (
 	id INT PRIMARY KEY AUTO_INCREMENT,
-	nome VARCHAR(50),
-	email VARCHAR(50),
-	senha VARCHAR(50),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+    nome VARCHAR (30) NOT NULL,
+    email VARCHAR (100) NOT NULL,
+    senha VARCHAR (30) NOT NULL
 );
 
-CREATE TABLE aviso (
+CREATE TABLE postagem(
 	id INT PRIMARY KEY AUTO_INCREMENT,
-	titulo VARCHAR(100),
-	descricao VARCHAR(150),
-	fk_usuario INT,
-	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
+    url_imagem VARCHAR(250) NOT NULL,
+    titulo VARCHAR (50) NOT NULL,
+    descricao VARCHAR (250) NOT NULL,
+    dt_postagem DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fk_usuario INT,
+    CONSTRAINT fkuser
+		FOREIGN KEY (fk_usuario)
+			REFERENCES usuario(id)
 );
 
-create table aquario (
-/* em nossa regra de negócio, um aquario tem apenas um sensor */
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	descricao VARCHAR(300),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+CREATE TABLE curtida (
+	id INT,
+    fk_usuario_curtida INT,
+    fk_postagem_curtida INT,
+    CONSTRAINT pks
+	PRIMARY KEY (id, fk_usuario_curtida, fk_postagem_curtida),
+    CONSTRAINT fks_curtidas
+		FOREIGN KEY (fk_usuario_curtida)
+			REFERENCES usuario(id),
+		FOREIGN KEY (fk_postagem_curtida)
+			REFERENCES postagem(id),
+	dt_curtida DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-/* esta tabela deve estar de acordo com o que está em INSERT de sua API do arduino - dat-acqu-ino */
+CREATE TABLE comentario (
+	id INT,
+    fk_usuario_comentario INT,
+    fk_postagem_comentario INT,
+    CONSTRAINT pks
+	PRIMARY KEY (id, fk_usuario_comentario, fk_postagem_comentario),
+	CONSTRAINT fks_comentarios
+		FOREIGN KEY (fk_usuario_comentario)
+			REFERENCES usuario(id),
+		FOREIGN KEY (fk_postagem_comentario)
+			REFERENCES postagem(id),
+    comentario VARCHAR (250) NOT NULL,
+	dt_comentario DATETIME DEFAULT CURRENT_TIMESTAMP
+);  
 
-create table medida (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	dht11_umidade DECIMAL,
-	dht11_temperatura DECIMAL,
-	luminosidade DECIMAL,
-	lm35_temperatura DECIMAL,
-	chave TINYINT,
-	momento DATETIME,
-	fk_aquario INT,
-	FOREIGN KEY (fk_aquario) REFERENCES aquario(id)
-);
 
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 1', 'ED145B');
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3');
-insert into aquario (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
-insert into aquario (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);

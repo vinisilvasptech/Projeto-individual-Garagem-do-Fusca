@@ -110,6 +110,16 @@ input[type="file"] {
     border-radius: 8px;
 }
 
+.botao-curtir {
+    font-size: 20px;
+    margin-top: 10px; 
+    border: none; 
+    background: none; 
+    cursor: pointer;
+    text-align: left;
+    margin-left: 4%;
+}
+
 .titulo {
     margin-top: 10px;
     margin-left: 5%;
