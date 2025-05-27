@@ -120,6 +120,11 @@ input[type="file"] {
     margin-left: 4%;
 }
 
+.qtd-curtidas {
+    display: flex;
+    margin-left: 5%;
+}
+
 .titulo {
     margin-top: 10px;
     margin-left: 5%;
