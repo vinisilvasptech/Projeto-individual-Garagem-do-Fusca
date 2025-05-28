@@ -2,167 +2,76 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>@usuarioatual</title>
-  <link rel="stylesheet" href="./css/dashboards.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard do sistema</title>
+  <link rel="stylesheet" href="./css/dashboards.css">
+
 </head>
 
 <body>
-  <div class="card-perfil">
-    <div class="container">
-      <div class="card">
-        <div class="img_perfil">
-          <img src="./assets/imgs/perfil_default.png" width="200px" />
+   <div class="menu-lateral">
+        <div class="container">
+            <div class="conteudo-principal">
+                <img src="./assets/imgs/logo.png" id="logo">
+                <span>@admin</span>
+            </div>
+            <a href="./index.html" class="botao_sair">Sair</a>
+        </div>
+    </div>
+
+  <main>
+
+    <span class="titulo">Dashboard Garagem do fusca</span>
+  <div class="kpis">
+        <div class="container">
+
+            <div class="card">
+                <div class="info">
+                    <!-- <span class="titulo">Silos em estado crítico</span>
+                    <span class="dado"> Silo B | Silo D </span> -->
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="info">
+                    <!-- <span class="titulo">Percentual de gás captado no dia</span>
+                    <span class="dado">4.90%</span> -->
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="info">
+                    <!-- <span class="titulo">Tempo médio em risco</span>
+                    <span class="dado">1h</span> -->
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="info">
+                    <!-- <span class="titulo">Status geral dos sensores</span>
+                    <span class="dado">100% </span> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="graficos">
+      <div class="container">
+
+        <div class="card-graficos">
+        
         </div>
 
-        <div class="dados">
-          <span class="nome-usuario">@equipevolkscarrao</span>
-          <span>equipevolkscarroao@gmail.com</span>
-        </div>
-
-        <div class="botoes">
-          <button><a href="">Voltar</a></button>
-          <button>Logout</button>
-        </div>
-
-        <div class="postagens-usuario">
-          <a href="./perfil.html">Suas postagens</a>
-          <a href="./dashboard.html">Dashboard</a>
-        </div>
-
-        <div class="postagens">
-          <h1>Principais métricas das suas postagens</h1>
-        </div>
-
-        <div class="kpis-qtd">
-          <div class="cards">icone coração <span></span><span></span></div>
-          <div class="cards">icone coração <span></span><span></span></div>
-          <div class="cards">icone coração <span></span><span></span></div>
-        </div>
-
-        <div class="graficos">
           <div class="card-graficos">
-            <canvas id="grafico_barra"></canvas>
-          </div>
+        
         </div>
 
-        <div class="graficos">
-          <div class="card-graficos">
-            <canvas id="grafico_linha"></canvas>
-          </div>
-        </div>
       </div>
     </div>
-  </div>
 
-  <!-- SCRIPT DOS GRÁFICOS -->
-  <script>
-   const ctx = document.getElementById('grafico_barra');
+  </main>
 
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['17/04', '18/04', '19/04', '20/04', '21/04', '22/04', '23/04'],
-            datasets: [
-                {
-                    label: 'Dia em estoque',
-                    data: [20000 ,18000 , 18000, 12000, 12000, 8000, 5000],
-                    backgroundColor: ['#008000'],
-                    barThickness: 60
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false 
-                },
-                title: {
-                    display: true,
-                    text: 'Nível de armazenamento (Semanal)',
-                    color: '#222222',
-                    font: {
-                        size: 20,
-                    }
-                },
-                tooltip: {
-                    backgroundColor: '#333333',
-                    titleColor: '#ffffff',
-                    bodyColor: '#ffffff'
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: '#111111',
-                    },
-                    grid: {
-                        display: false
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: '#111111'
-                    },
-                    grid: {
-                        display: false
-                    }
-                }
-            }
-        }
-    });
-
-
-
-    const lugar = document.getElementById('grafico_linha');
-
-    new Chart(lugar, {
-        type: 'line',
-        data: {
-            labels: [
-                '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00',
-                '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00',
-                '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'
-            ], datasets: [{
-                label: 'Silo A',
-                data: [
-                    1.10, 1.20, 0.80, 0.50, 1.0, 1.10, 0.90, 0.30, 0.40, 0.80, 0.40, 0.30, 0.20, 0.60, 
-                ], borderWidth: 1,
-                backgroundColor: '#008000',
-                borderColor: '#008000'
-            },
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    labels: {
-                        font: {
-                            size: 12
-                        }
-                    }
-                },
-                title: {
-                    display: true,
-                    text: 'Média diária dos gases no silo A (por Hora)',
-                    color: '#222222',
-                    font: {
-                        size: 20,
-                    }
-                },
-                tooltip: {
-                    backgroundColor: '#333333',
-                    titleColor: '#ffffff',
-                    bodyColor: '#ffffff'
-                }
-            }
-        }
-    });
-  </script>
 </body>
 
 </html>
