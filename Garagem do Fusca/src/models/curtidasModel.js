@@ -40,10 +40,10 @@ function descurtir(idUsuario, idPostagem) {
 }
 
 //Função para contar todas as curitdas daquela post
-function contarCurtidas(_, idPostagem) {
+function contarCurtidas(idUsuario) {
     const instrucao = `
         SELECT COUNT(*) AS qtd FROM curtida
-        WHERE fk_postagem_curtida = ${idPostagem};
+        WHERE fk_postagem_curtida = ${idUsuario};
     `;
     return database.executar(instrucao);
 }
