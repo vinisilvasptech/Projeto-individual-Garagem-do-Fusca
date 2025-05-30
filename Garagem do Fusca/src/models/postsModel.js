@@ -7,6 +7,7 @@ function salvar(postagem) {
   `;
   return database.executar(instrucao);
 }
+
 function listar() {
   const instrucao =
     `
@@ -25,6 +26,14 @@ function listar() {
 
 }
 
+function contarPostagensTotal() {
+  const instrucao = 
+    `SELECT COUNT(*) AS Total_postagens FROM postagem;`;
+  return database.executar(instrucao)
+}
 
-
-module.exports = { salvar, listar};
+module.exports = {
+   salvar, 
+   listar,
+  contarPostagensTotal
+  };

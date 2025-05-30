@@ -16,4 +16,6 @@ router.post('/cadastro', upload.single('imagem'), (req, res) => {
   postsController.salvar(req, res);
 });
 
+router.get('/total', postsController.contarPostagensTotal);
+
 module.exports = router;

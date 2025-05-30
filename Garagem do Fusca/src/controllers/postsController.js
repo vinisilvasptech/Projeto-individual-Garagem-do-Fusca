@@ -39,4 +39,13 @@ function listar(req, res) {
   });
 }
 
-module.exports = { salvar, listar};
+function contarPostagensTotal(req, res) {
+  postsModel.contarPostagensTotal()
+  .then(resultado => res.json(resultado[0]))
+  .catch(erro => {
+  console.error("Erro ao contar postagens:", erro);
+  res.status(500).json({erro: "Erro ao contar postagens"});
+  });
+}
+
+module.exports = { salvar, listar, contarPostagensTotal} ;

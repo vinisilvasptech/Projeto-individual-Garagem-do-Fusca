@@ -7,64 +7,70 @@
   <title>Dashboard do sistema</title>
   <link rel="stylesheet" href="./css/dashboards.css">
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
-   <div class="menu-lateral">
-        <div class="container">
-            <div class="conteudo-principal">
-                <img src="./assets/imgs/logo.png" id="logo">
-                <span>@admin</span>
-            </div>
-            <a href="./index.html" class="botao_sair">Sair</a>
-        </div>
+  <div class="menu-lateral">
+    <div class="container">
+      <div class="conteudo-principal">
+        <img src="./assets/imgs/logo.png" id="logo">
+        <span>@admin</span>
+      </div>
+      <a href="./index.html" class="botao_sair">Sair</a>
     </div>
+  </div>
 
   <main>
 
     <span class="titulo">Dashboard Garagem do fusca</span>
-  <div class="kpis">
-        <div class="container">
+    <div class="kpis">
+      <div class="container">
 
-            <div class="card">
-                <div class="info">
-                    <!-- <span class="titulo">Silos em estado crítico</span>
-                    <span class="dado"> Silo B | Silo D </span> -->
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="info">
-                    <!-- <span class="titulo">Percentual de gás captado no dia</span>
-                    <span class="dado">4.90%</span> -->
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="info">
-                    <!-- <span class="titulo">Tempo médio em risco</span>
-                    <span class="dado">1h</span> -->
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="info">
-                    <!-- <span class="titulo">Status geral dos sensores</span>
-                    <span class="dado">100% </span> -->
-                </div>
-            </div>
+        <div class="card">
+          <div class="info">
+            <span class="titulo">Total de posts</span>
+            <span class="dado" id="kpi-total-posts"></span>
+          </div>
         </div>
+
+        <div class="card">
+          <div class="info">
+            <span class="titulo">Total de curtidas</span>
+            <span class="dado">...</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="info">
+            <span class="titulo">Postagem mais curtida</span>
+            <span class="dado">...</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="info">
+            <span class="titulo">Média de curtidas por postagem</span>
+            <span class="dado">...</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="graficos">
       <div class="container">
 
         <div class="card-graficos">
-        
+          <div>
+            <canvas id="myChart"></canvas>
+          </div>
         </div>
 
-          <div class="card-graficos">
-        
+        <div class="card-graficos">
+          <div>
+            <canvas id="graficoModerno"></canvas>
+          </div>
         </div>
 
       </div>
@@ -73,5 +79,147 @@
   </main>
 
 </body>
-
 </html>
+
+
+<script>
+window.onload = () => {
+  fetch('/posts/total')
+    .then(res => res.json())
+    .then(dados => {
+      if (dados.Total_postagens !== undefined) {
+        document.getElementById('kpi-total-posts').textContent = dados.Total_postagens;
+      } else {
+        console.error("Dados com formato inesperado:", dados);
+      }
+    })
+    .catch(err => {
+      console.error("Erro na requisição:", err);
+    });
+};
+
+// Total de curtidas
+fetch('/curtidas/total')
+  .then(res => res.json())
+  .then(dados => {
+    document.querySelectorAll('.kpis .card .dado')[1].textContent = dados.total_curtidas;
+  })
+  .catch(err => console.error("Erro ao buscar total de curtidas:", err));
+
+// Postagem mais curtida
+fetch('/curtidas/mais-curtida')
+  .then(res => res.json())
+  .then(dados => {
+    document.querySelectorAll('.kpis .card .dado')[2].textContent = `${dados.titulo} (${dados.qtd_curtidas} curtidas)`;
+  })
+  .catch(err => console.error("Erro ao buscar postagem mais curtida:", err));
+
+// Média de curtidas por postagem
+fetch('/curtidas/media')
+  .then(res => res.json())
+  .then(dados => {
+    // Exibe com duas casas decimais
+    document.querySelectorAll('.kpis .card .dado')[3].textContent = Number(dados.media_curtidas).toFixed(2);
+  })
+  .catch(err => console.error("Erro ao buscar média de curtidas:", err));
+
+
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+    const ctx2 = document.getElementById('graficoModerno').getContext('2d');
+  
+  const gradient = ctx2.createLinearGradient(0, 0, 0, 400);
+  gradient.addColorStop(0, 'rgba(0, 123, 255, 0.3)');
+  gradient.addColorStop(1, 'rgba(0, 123, 255, 0.05)');
+
+  const grafico = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+      datasets: [{
+        label: 'Vendas 2025',
+        data: [120, 190, 150, 220, 260, 310],
+        fill: true,
+        backgroundColor: gradient,
+        borderColor: '#007bff',
+        borderWidth: 2,
+        pointRadius: 4,
+        pointBackgroundColor: '#007bff',
+        pointHoverRadius: 6,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true,
+          labels: {
+            color: '#444',
+            font: {
+              size: 14,
+              weight: '500'
+            },
+            padding: 20
+          }
+        },
+        tooltip: {
+          backgroundColor: '#fff',
+          titleColor: '#007bff',
+          bodyColor: '#333',
+          borderColor: '#007bff',
+          borderWidth: 1,
+          cornerRadius: 6,
+          titleFont: { weight: 'bold' },
+          bodyFont: { size: 14 },
+          padding: 12
+        }
+      },
+      scales: {
+        x: {
+          grid: {
+            display: false
+          },
+          ticks: {
+            color: '#666',
+            font: {
+              size: 13
+            }
+          }
+        },
+        y: {
+          grid: {
+            color: 'rgba(0,0,0,0.05)'
+          },
+          ticks: {
+            color: '#666',
+            font: {
+              size: 13
+            },
+            beginAtZero: true
+          }
+        }
+      }
+    }
+  });
+
+</script>
