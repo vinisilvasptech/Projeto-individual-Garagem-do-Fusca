@@ -75,7 +75,7 @@ main {
 
 .kpis .card {
     background-color: #fff;
-    height: 80px;
+    height: 100px;
     width: 250px;
     padding: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
@@ -85,7 +85,6 @@ main {
 .info {
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 
 .info .titulo {

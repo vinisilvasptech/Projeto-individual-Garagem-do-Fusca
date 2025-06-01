@@ -60,10 +60,17 @@ function mediaCurtidasPorPostagem(req, res) {
     .then(resultado => res.json(resultado[0]));
 }
 
+function obterCurtidasPorDia(req, res) {
+  curtidasModel.obterCurtidasPorDia()
+    .then(resultado => {
+      res.json(resultado);
+})}
+
 module.exports = {
     alternarCurtida,
     contar,
     contarCurtidasTotal,
     usuarioComMaiorMediaCurtidas,
-    mediaCurtidasPorPostagem
+    mediaCurtidasPorPostagem,
+    obterCurtidasPorDia
 };

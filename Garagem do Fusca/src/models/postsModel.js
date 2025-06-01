@@ -32,8 +32,22 @@ function contarPostagensTotal() {
   return database.executar(instrucao)
 }
 
+function obterEvolucaoPostagens() {
+    const instrucao = `
+           SELECT 
+            DATE_FORMAT(dt_postagem, '%d/%m') AS data,
+            COUNT(*) AS quantidade
+        FROM postagem
+        WHERE dt_postagem >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+        GROUP BY data
+        ORDER BY STR_TO_DATE(data, '%d/%m');
+    `;
+    return database.executar(instrucao);
+}
+
 module.exports = {
    salvar, 
    listar,
-  contarPostagensTotal
+  contarPostagensTotal,
+  obterEvolucaoPostagens
   };

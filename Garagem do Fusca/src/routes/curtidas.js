@@ -18,4 +18,6 @@ router.get('/maior_media', curtidasController.usuarioComMaiorMediaCurtidas);
 
 router.get('/media_curtidas_postagens', curtidasController.mediaCurtidasPorPostagem);
 
+router.get("/curtidasPorDia", curtidasController.obterCurtidasPorDia);
+
 module.exports = router;

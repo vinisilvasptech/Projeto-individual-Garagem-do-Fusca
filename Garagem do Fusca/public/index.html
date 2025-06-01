@@ -211,3 +211,23 @@
 </body>
 
 </html>
+
+<script>
+  // Pega o nome do usuário do sessionStorage
+const nomeUsuario = sessionStorage.getItem('nomeUsuario'); // substitua 'nomeUsuario' pela chave correta que você usa
+
+const userNameSpan = document.getElementById('user-name');
+const loginBtn = document.getElementById('login-btn');
+
+if (nomeUsuario) {
+  // Se tem usuário logado, mostra o nome e esconde o botão login
+  userNameSpan.textContent = `Olá, ${nomeUsuario}`;
+  userNameSpan.style.display = 'inline'; // mostra o span
+  loginBtn.style.display = 'none';       // esconde o botão login
+} else {
+  // Se não tem usuário, mostra o botão login e esconde o nome
+  userNameSpan.style.display = 'none';
+  loginBtn.style.display = 'inline-block';
+}
+
+</script>

@@ -82,6 +82,19 @@ function mediaCurtidasPorPostagem() {
   return database.executar(instrucao);
 }
 
+function obterCurtidasPorDia() {
+  const instrucao = `
+    SELECT 
+      DATE(dt_curtida) AS data,
+      COUNT(*) AS total_curtidas
+    FROM curtida
+    WHERE dt_curtida >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+    GROUP BY DATE(dt_curtida)
+    ORDER BY data;
+  `;
+  return database.executar(instrucao);
+}
+
 
 module.exports = {
     verificarCurtida,
@@ -90,6 +103,7 @@ module.exports = {
     contarCurtidas,
     contarCurtidasTotal,
     usuarioComMaiorMediaCurtidas,
-    mediaCurtidasPorPostagem
+    mediaCurtidasPorPostagem,
+    obterCurtidasPorDia
 };
 

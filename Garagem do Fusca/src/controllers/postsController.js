@@ -6,9 +6,9 @@ function salvar(req, res) {
   }
 
   const imagem = req.file.filename;
-  const { titulo, descricao} = req.body;
+  const { titulo, descricao, fk_usuario } = req.body;
 
-  if (!titulo || !descricao ) {
+  if (!titulo || !descricao || !fk_usuario) {
     return res.status(400).json({ erro: "Campos obrigatórios não preenchidos." });
   }
 
@@ -48,4 +48,8 @@ function contarPostagensTotal(req, res) {
   });
 }
 
-module.exports = { salvar, listar, contarPostagensTotal} ;
+function obterEvolucaoPostagens(req, res) {
+  postsModel.obterEvolucaoPostagens()
+    .then(result => res.json(result))}
+
+module.exports = { salvar, listar, contarPostagensTotal, obterEvolucaoPostagens} ;
