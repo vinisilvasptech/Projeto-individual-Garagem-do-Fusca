@@ -12,4 +12,10 @@ router.get('/contar/:idPostagem', function(req, res) {
     curtidasController.contar(req, res);
 });
 
+router.get('/total', curtidasController.contarCurtidasTotal);
+
+router.get('/maior_media', curtidasController.usuarioComMaiorMediaCurtidas);
+
+router.get('/media_curtidas_postagens', curtidasController.mediaCurtidasPorPostagem);
+
 module.exports = router;

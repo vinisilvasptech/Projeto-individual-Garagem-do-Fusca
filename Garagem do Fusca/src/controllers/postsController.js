@@ -6,9 +6,9 @@ function salvar(req, res) {
   }
 
   const imagem = req.file.filename;
-  const { titulo, descricao, fk_usuario } = req.body;
+  const { titulo, descricao} = req.body;
 
-  if (!titulo || !descricao || !fk_usuario) {
+  if (!titulo || !descricao ) {
     return res.status(400).json({ erro: "Campos obrigatórios não preenchidos." });
   }
 

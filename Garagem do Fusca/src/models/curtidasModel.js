@@ -48,11 +48,48 @@ function contarCurtidas(idUsuario) {
     return database.executar(instrucao);
 }
 
+function contarCurtidasTotal () {
+    const instrucao = 
+    `SELECT COUNT(*) AS total_curtidas FROM curtida;`;
+    return database.executar(instrucao)
+}
+
+function usuarioComMaiorMediaCurtidas() {
+     const instrucao = `
+        SELECT 
+            u.nome AS nome_usuario,
+            ROUND(COUNT(c.fk_postagem_curtida) * 1.0 / COUNT(DISTINCT p.id), 2) AS media_curtidas
+        FROM usuario u
+        JOIN postagem p ON p.fk_usuario = u.id
+        LEFT JOIN curtida c ON c.fk_postagem_curtida = p.id
+        GROUP BY u.id
+        HAVING COUNT(p.id) > 0
+        ORDER BY media_curtidas DESC
+        LIMIT 1;
+    `;
+    return database.executar(instrucao);
+}
+
+function mediaCurtidasPorPostagem() {
+  const instrucao = `
+    SELECT AVG(qtd) AS media_curtidas FROM (
+      SELECT COUNT(c.fk_postagem_curtida) AS qtd
+      FROM postagem p
+      LEFT JOIN curtida c ON p.id = c.fk_postagem_curtida
+      GROUP BY p.id
+    ) AS subconsulta;
+  `;
+  return database.executar(instrucao);
+}
+
 
 module.exports = {
     verificarCurtida,
     curtir,
     descurtir,
-    contarCurtidas
+    contarCurtidas,
+    contarCurtidasTotal,
+    usuarioComMaiorMediaCurtidas,
+    mediaCurtidasPorPostagem
 };
 

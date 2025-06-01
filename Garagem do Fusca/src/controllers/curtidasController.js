@@ -45,7 +45,25 @@ function contar(req, res) {
         });
 }
 
+function contarCurtidasTotal(req, res) {
+    curtidasModel.contarCurtidasTotal()
+    .then(resultado => res.json(resultado[0]));
+}
+
+function usuarioComMaiorMediaCurtidas(req, res) {
+    curtidasModel.usuarioComMaiorMediaCurtidas()
+    .then(resultado => res.json(resultado[0]));
+}
+
+function mediaCurtidasPorPostagem(req, res) {
+    curtidasModel.mediaCurtidasPorPostagem()
+    .then(resultado => res.json(resultado[0]));
+}
+
 module.exports = {
     alternarCurtida,
-    contar
+    contar,
+    contarCurtidasTotal,
+    usuarioComMaiorMediaCurtidas,
+    mediaCurtidasPorPostagem
 };

@@ -38,21 +38,21 @@
         <div class="card">
           <div class="info">
             <span class="titulo">Total de curtidas</span>
-            <span class="dado">...</span>
+            <span class="dado" id="kpi-total-curtidas"></span>
           </div>
         </div>
 
         <div class="card">
           <div class="info">
-            <span class="titulo">Postagem mais curtida</span>
-            <span class="dado">...</span>
+            <span class="titulo">Usuário com maior número de curtidas por post</span>
+            <span class="dado" id="kpi-maior-media-curtidas"></span>
           </div>
         </div>
 
         <div class="card">
           <div class="info">
             <span class="titulo">Média de curtidas por postagem</span>
-            <span class="dado">...</span>
+            <span class="dado" id="kpis-media-curtidas">...</span>
           </div>
         </div>
       </div>
@@ -79,51 +79,69 @@
   </main>
 
 </body>
+
 </html>
 
 
 <script>
-window.onload = () => {
-  fetch('/posts/total')
-    .then(res => res.json())
-    .then(dados => {
-      if (dados.Total_postagens !== undefined) {
-        document.getElementById('kpi-total-posts').textContent = dados.Total_postagens;
-      } else {
-        console.error("Dados com formato inesperado:", dados);
-      }
-    })
-    .catch(err => {
-      console.error("Erro na requisição:", err);
-    });
-};
+  window.onload = () => {
+    fetch('/posts/total')
+      .then(res => res.json())
+      .then(dados => {
+        if (dados.Total_postagens !== undefined) {
+          document.getElementById('kpi-total-posts').textContent = dados.Total_postagens;
+        } else {
+          console.error("Dados com formato inesperado:", dados);
+        }
+      })
+      .catch(err => {
+        console.error("Erro na requisição:", err);
+      });
 
-// Total de curtidas
-fetch('/curtidas/total')
-  .then(res => res.json())
-  .then(dados => {
-    document.querySelectorAll('.kpis .card .dado')[1].textContent = dados.total_curtidas;
-  })
-  .catch(err => console.error("Erro ao buscar total de curtidas:", err));
+    fetch('/curtidas/total')
+      .then(res => res.json())
+      .then(dados => {
+        if (dados.total_curtidas !== undefined) {
+          document.getElementById('kpi-total-curtidas').textContent = dados.total_curtidas;
+        }
+        else {
+          console.error("Formato inesperado:", dados);
+        }
+      })
+      .catch(err => {
+        console.error("Erro na requisição:", err);
+      });
 
-// Postagem mais curtida
-fetch('/curtidas/mais-curtida')
-  .then(res => res.json())
-  .then(dados => {
-    document.querySelectorAll('.kpis .card .dado')[2].textContent = `${dados.titulo} (${dados.qtd_curtidas} curtidas)`;
-  })
-  .catch(err => console.error("Erro ao buscar postagem mais curtida:", err));
+    fetch('/curtidas/maior_media')
+      .then(res => res.json())
+      .then(dados => {
+        if (dados.nome_usuario !== undefined && dados.media_curtidas !== undefined) {
+          document.getElementById('kpi-maior-media-curtidas').textContent =
+            `${dados.nome_usuario} - ${dados.media_curtidas} curtidas`;
+        } else {
+          console.error("Formato inesperado:", dados);
+        }
+      })
+      .catch(err => {
+        console.error("Erro na requisição:", err);
+      });
 
-// Média de curtidas por postagem
-fetch('/curtidas/media')
-  .then(res => res.json())
-  .then(dados => {
-    // Exibe com duas casas decimais
-    document.querySelectorAll('.kpis .card .dado')[3].textContent = Number(dados.media_curtidas).toFixed(2);
-  })
-  .catch(err => console.error("Erro ao buscar média de curtidas:", err));
+        fetch('/curtidas/media_curtidas_postagens')
+      .then(res => res.json())
+      .then(dados => {
+        if (dados.media_curtidas !== undefined) {
+          document.getElementById('kpis-media-curtidas').textContent = dados.media_curtidas;
+        }
+        else {
+          console.error("Formato inesperado:", dados);
+        }
+      })
+      .catch(err => {
+        console.error("Erro na requisição:", err);
+      });
 
-
+  };
+  
   const ctx = document.getElementById('myChart');
 
   new Chart(ctx, {
@@ -145,8 +163,8 @@ fetch('/curtidas/media')
     }
   });
 
-    const ctx2 = document.getElementById('graficoModerno').getContext('2d');
-  
+  const ctx2 = document.getElementById('graficoModerno').getContext('2d');
+
   const gradient = ctx2.createLinearGradient(0, 0, 0, 400);
   gradient.addColorStop(0, 'rgba(0, 123, 255, 0.3)');
   gradient.addColorStop(1, 'rgba(0, 123, 255, 0.05)');
