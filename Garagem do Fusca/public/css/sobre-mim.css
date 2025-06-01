@@ -1,0 +1,232 @@
+* {
+    margin: 0;
+    display: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+.header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 85%;
+    margin: auto;
+}
+
+.header {
+    background-color: #222;
+    width: 100%;
+    height: 80px;
+}
+
+.header .links{
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    color: #fff;    
+}
+
+.header img {
+    width: 200px;
+}
+
+.header a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.header button {
+    height: 30px;
+    width: 100px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+main {
+    width: 80%;
+    height: 80%;
+    margin: auto;
+}
+
+.introducao .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 60px;
+}
+
+.introducao .container .description {
+    text-align: center;
+    margin-top: 20px;
+    width: 70%
+}
+
+.sobre-mim .container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 60px;
+}
+
+.sobre-mim .imagem img {
+    width: 400px;
+    height: 400px;
+    border-radius: 10px;
+}
+
+.sobre-mim .conteudo {
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+}
+
+.sobre-mim .conteudo .titulo {
+    font-size: 40px;
+}
+
+.sobre-mim .conteudo .descricao {
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.trajetoria {
+  max-width: 700px;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.trajetoria h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #222;
+}
+
+.trajetoria-item {
+  background-color: #fff;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.trajetoria-item:hover {
+  transform: scale(1.01);
+}
+
+.trajetoria-header {
+  padding: 20px;
+}
+
+.trajetoria-header h3 {
+  color: #007bff;
+  margin: 0 0 10px;
+}
+
+.trajetoria-header p {
+  color: #555;
+  margin: 0;
+}
+
+.trajetoria-conteudo {
+  max-height: 0;
+  padding: 0 20px;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  background-color: #f9f9f9;
+}
+
+.trajetoria-item.expanded .trajetoria-conteudo {
+  padding: 20px;
+  max-height: 500px; /* suficiente para imagem + texto */
+}
+
+.trajetoria-conteudo p {
+  margin: 10px 0;
+  color: #444;
+}
+
+.trajetoria-conteudo img {
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+
+
+/* Footer  */
+
+.footer .container {
+    display: flex;
+    width: 100%;
+    height: 300px;
+    background-color: #222;
+    margin-top: 80px;
+}
+
+.footer .logo {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    margin-left: 50px;
+}
+
+.footer .logo img {
+    width: 300px;
+}
+
+.footer .logo span {
+    width: 400px;
+    color: #fff;
+    font-size: 12px;
+}
+
+.footer .redes {
+    display: flex;
+    flex-direction: row;
+    margin-left: 20%;
+    gap: 35px;
+}
+
+.footer .conteudo {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-right: 5%;
+    gap: 50px;
+    width: 100%;
+    margin-top: 35px;
+    color: #fff;
+    text-align: center;
+}
+
+
+.footer .conteudo a {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: #fff;
+    margin-bottom: 15px;
+    width: 250px;
+} 
+
+.feito_por .container {
+    width: 100%;
+}
+
+.feito_por .conteudo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 70px;
+    background-color: #000;
+    color: #fff;
+}
+
+.feito_por a {
+    color: #fff;
+}
+/* Fim footer  */
