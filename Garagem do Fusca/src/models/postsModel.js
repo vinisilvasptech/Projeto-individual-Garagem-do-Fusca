@@ -20,7 +20,8 @@ function listar() {
     u.nome
     FROM postagem p
     JOIN usuario u
-    ON p.fk_usuario = u.id;
+    ON p.fk_usuario = u.id
+    ORDER BY dt_postagem;
     `;
   return database.executar(instrucao);
 

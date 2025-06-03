@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="./css/comunidade.css" />
   <link rel="icon" href="./assets/imgs_garagem/logo.png">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <title>Comunidade</title>
 </head>
@@ -30,7 +30,7 @@
 
   <main>
 
-     <div class="div_msg" id="div_msg"></div>
+    <div class="div_msg" id="div_msg"></div>
 
     <div class="form-posts">
       <div class="container">
@@ -39,12 +39,12 @@
 
           <div class="campos-form">
             <label for="titulo">Título</label>
-            <input name="titulo" id="titulo" type="text" placeholder="Título do post" />
+            <input name="titulo" id="ipt_titulo" type="text" placeholder="Título do post" />
           </div>
 
           <div class="campos-form">
             <label for="descricao">Descrição</label>
-            <input name="descricao" id="descricao" type="text" placeholder="Descrição do post" />
+            <input name="descricao" id="ipt_descricao" type="text" placeholder="Descrição do post" />
           </div>
 
           <div class="campos-form">
@@ -55,7 +55,7 @@
 
           <img id="preview" src="#" style="display:none;" />
 
-          <button type="button" onclick="enviar()">Enviar</button>
+          <button type="button" onclick="postar()">Enviar</button>
         </div>
       </div>
     </div>
@@ -132,148 +132,133 @@
 
 </html>
 
+<script>
+  function mostrarPreview() {
 
-  <script>
-    function mostrarPreview() {
-      const input = document.getElementById('imagem');
-      const preview = document.getElementById('preview');
+    var input = document.getElementById('imagem');
+    var preview = document.getElementById('preview');
 
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-          preview.src = e.target.result;
-          preview.style.display = 'block';
-        };
-
-        reader.readAsDataURL(input.files[0]);
-      }
+    if (input.files.length > 0) {
+      var leitor = new FileReader();
+      leitor.onload = function (evento) {
+        preview.src = evento.target.result;
+        preview.style.display = 'block';
+      };
+      leitor.readAsDataURL(input.files[0]);
     }
+  }
 
-    function enviar() {
-      const formData = new FormData();
-      formData.append('titulo', titulo.value);
-      formData.append('descricao', descricao.value);
-      formData.append('imagem', imagem.files[0]);
+  function postar() {
+    const form = new FormData();
+    form.append('titulo', ipt_titulo.value);
+    form.append('descricao', ipt_descricao.value);
+    form.append('imagem', imagem.files[0]);
 
-      const id_usuario = sessionStorage.ID_USUARIO;
-      if (!id_usuario) {
-        alert("Usuário não autenticado.");
-        return;
-      }
+    const id = sessionStorage.ID_USUARIO;
 
-      formData.append('fk_usuario', id_usuario);
+    if (!id) return alert ("Usuário não autenticado.");
 
-      fetch("/posts/cadastro", {
-        method: "POST",
-        body: formData
-      })
-        .then(res => res.text())
-        .then(msg => {
-          alert(msg);
-          carregarPostagens();
-        })
-        .catch(err => console.log(err));
-    }
+    form.append('fk_usuario', id);
 
-    function carregarCurtidas(idPostagem, callback) {
-      fetch(`/curtidas/contar/${idPostagem}`)
-        .then(res => {
-          if (!res.ok) throw new Error("Falha ao buscar curtidas");
-          return res.json();
-        })
-        .then(dados => {
-          callback(dados.qtd || 0);
-        })
-        .catch(err => {
-          console.error(err);
-          callback(0);
+    fetch("/posts/cadastro", {
+      method: "POST",
+      body:form
+    })
+     .then(r => r.text())
+    .then(alert)
+    .then(carregarPostagens)
+    .catch(console.log);
+  }
+
+  // Busca quantidade de curtidas de uma postagem e executa callback com o número
+ function carregarCurtidas(id, cb) {
+  fetch("/curtidas/contar/" + id)
+    .then(res => res.json())
+    .then(dados => cb(dados.qtd || 0))
+    .catch(() => cb(0));
+}
+
+
+  // Carrega as postagens do servidor e mostra na tela
+ function carregarPostagens() {
+  fetch("/posts/listar")
+    .then(r => r.json())
+    .then(lista => {
+      var div = document.getElementById("div_msg");
+      div.innerHTML = "";
+      var i = lista.length - 1;
+
+      function mostrar() {
+        if (i < 0) return ativarBotoesCurtir();
+        var p = lista[i--];
+        carregarCurtidas(p.id, n => {
+          div.innerHTML += `
+            <div class="post" id="post-${p.id}">
+              <h4>@${p.nome}</h4>
+              <div class="post-img">
+                <img src="/public/assets/imgs_postagens/${p.url_imagem}" />
+              </div>
+              <button class="botao-curtir" data-id="${p.id}">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+              <span id="qtd-curtidas-${p.id}">${n}</span>
+              <span>${p.titulo}</span><br>
+              <span>${p.descricao}</span><br>
+              <span>${p.dt_postagem}</span>
+            </div>`;
+          mostrar();
         });
-    }
+      }
 
-    function carregarPostagens() {
-      fetch("/posts/listar")
-        .then(res => res.json())
-        .then(postagens => {
-          const container = document.getElementById("div_msg");
-          container.innerHTML = "";
+      mostrar();
+    })
+    .catch(console.log);
+}
 
-          function adicionarPostagem(i) {
-            if (i < 0) {
-              ativarBotoesCurtir();
-              return;
+  // Ativa os botões de curtir, adicionando o comportamento de clique
+  function ativarBotoesCurtir() {
+    var botoes = document.getElementsByClassName('botao-curtir');
+
+    for (var i = 0; i < botoes.length; i++) {
+      botoes[i].onclick = function () {
+        var idPostagem = this.getAttribute('data-id');
+        var idUsuario = sessionStorage.ID_USUARIO;
+
+        if (!idUsuario) {
+          alert("Usuário não identificado");
+          return;
+        }
+
+        fetch("/curtidas/alternar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idUsuario: idUsuario, idPostagem: idPostagem })
+        })
+          .then(function (resposta) {
+            if (!resposta.ok) throw new Error();
+
+            var icone = this.querySelector("i"); // O problema é que o `this` muda dentro do then!
+            var span = document.getElementById("qtd-curtidas-" + idPostagem);
+            var n = Number(span.innerText);
+
+            if (icone.classList.contains("fa-regular")) {
+              icone.classList.replace("fa-regular", "fa-solid");
+              icone.style.color = "red";
+              n++;
+            } else {
+              icone.classList.replace("fa-solid", "fa-regular");
+              icone.style.color = "";
+              n--;
             }
 
-            const post = postagens[i];
-            carregarCurtidas(post.id, function (qtdCurtidas) {
-              container.innerHTML += `
-                <div class="post" id="post-${post.id}">
-                  <h4>@${post.nome}</h4>
-                  <div class="post-img">
-                    <img src="/public/assets/imgs_postagens/${post.url_imagem}" alt="Imagem do post" />
-                  </div>
-
-                  <button class="botao-curtir" data-id="${post.id}">
-                    <i class="fa-regular fa-heart"></i>
-                  </button>
-                  <span class="qtd-curtidas" id="qtd-curtidas-${post.id}">${qtdCurtidas}</span>
-                  <span class="titulo">${post.titulo}</span><br>
-                  <span class="descricao">${post.descricao}</span><br>
-                  <span class="data">${post.dt_postagem}</span>
-                </div>`;
-              adicionarPostagem(i - 1);
-            });
-          }
-
-          adicionarPostagem(postagens.length - 1);
-        })
-        .catch(err => console.error("Erro ao carregar postagens:", err));
+            span.innerText = n;
+          }.bind(this)) // Aqui o bind para manter o contexto do this
+          .catch(console.log);
+      };
     }
+  }
 
-    function ativarBotoesCurtir() {
-      const botoes = document.getElementsByClassName('botao-curtir');
+  // Quando a página carregar, mostra os posts
+  window.onload = carregarPostagens;
 
-      for (let i = 0; i < botoes.length; i++) {
-        botoes[i].addEventListener('click', function () {
-          const idPostagem = this.getAttribute('data-id');
-          const idUsuario = sessionStorage.ID_USUARIO;
-
-          if (!idUsuario) {
-            alert("Usuário não autenticado.");
-            return;
-          }
-
-          fetch("/curtidas/alternar", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ idUsuario, idPostagem })
-          })
-            .then(res => {
-              if (!res.ok) throw new Error("Erro ao curtir/descurtir");
-
-              const icone = this.querySelector("i");
-              let novaQtd;
-
-              if (icone.classList.contains("fa-regular")) {
-                icone.classList.remove("fa-regular");
-                icone.classList.add("fa-solid");
-                icone.style.color = "red";
-                novaQtd = parseInt(document.getElementById(`qtd-curtidas-${idPostagem}`).innerText) + 1;
-              } else {
-                icone.classList.remove("fa-solid");
-                icone.classList.add("fa-regular");
-                icone.style.color = "";
-                novaQtd = parseInt(document.getElementById(`qtd-curtidas-${idPostagem}`).innerText) - 1;
-              }
-
-              document.getElementById(`qtd-curtidas-${idPostagem}`).innerText = novaQtd;
-            })
-            .catch(err => {
-              console.error("Erro ao alternar curtida:", err);
-            });
-        });
-      }
-    }
-
-    window.onload = carregarPostagens;
-  </script>
+</script>
