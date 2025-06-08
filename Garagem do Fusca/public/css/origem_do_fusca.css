@@ -48,6 +48,11 @@ body {
     cursor: pointer;
 }
 
+.header #nome_usuario {
+    color: #fff;
+    font-size: 20px;
+}
+
 /*Fim Header */
 
 /* Banner */

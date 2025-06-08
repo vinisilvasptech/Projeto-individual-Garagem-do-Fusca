@@ -26,7 +26,8 @@
         <a href="./modelos.html">Modelos</a>
         <a href="./comunidade.html">Comunidade</a>
       </div>
-      <button onclick="window.location.href='login.html'">Login</button>
+      <button id="botao_login" onclick="window.location.href='login.html'">Login</button>
+      <span id="nome_usuario" onclick="window.location.href='perfil.html'"></span>
     </div>
   </div>
 
@@ -135,6 +136,20 @@
 </html>
 
 <script>
+
+const nome = sessionStorage.getItem('NOME_USUARIO');
+
+  const botaoLogin = document.getElementById('botao_login');
+  const spanNome = document.getElementById('nome_usuario');
+
+  if (nome) {
+    botaoLogin.style.display = 'none';
+    spanNome.style.display = 'inline';
+    spanNome.textContent = `@${nome}`;
+  } else {
+    spanNome.style.display = 'none';
+  }
+
   function mostrarPreview() {
 
     var input = document.getElementById('imagem');

@@ -21,18 +21,19 @@
 
     <!-- Header -->
     <div class="header">
-        <div class="container">
-            <img src="./assets/imgs/logo.png" alt="">
-            <div class="links">
-                <a href="./index.html">Home</a>
-                <a href="./origem_do_fusca.html">Origem do fusca</a>
-                <a href="./fusca_no_brasil.html">Fusca no Brasil</a>
-                <a href="./modelos.html">Modelos</a>
-                <a href="./comunidade.html">Comunidade</a>
-            </div>
-            <button onclick="window.location.href='login.html'">Login</button>
-        </div>
+    <div class="container">
+      <img src="./assets/imgs/logo.png" alt="">
+      <div class="links">
+        <a href="./index.html">Home</a>
+        <a href="./origem_do_fusca.html">Origem do fusca</a>
+        <a href="./fusca_no_brasil.html">Fusca no Brasil</a>
+        <a href="./modelos.html">Modelos</a>
+        <a href="./comunidade.html">Comunidade</a>
+      </div>
+      <button id="botao_login" onclick="window.location.href='login.html'">Login</button>
+      <span id="nome_usuario" onclick="window.location.href='perfil.html'"></span>
     </div>
+  </div>
     <!-- Fim Header  -->
 
     <!-- Banner -->
@@ -221,3 +222,18 @@
 </body>
 
 </html>
+
+<script>
+    const nome = sessionStorage.getItem('NOME_USUARIO');
+
+  const botaoLogin = document.getElementById('botao_login');
+  const spanNome = document.getElementById('nome_usuario');
+
+  if (nome) {
+    botaoLogin.style.display = 'none';
+    spanNome.style.display = 'inline';
+    spanNome.textContent = `@${nome}`;
+  } else {
+    spanNome.style.display = 'none';
+  }
+</script>
