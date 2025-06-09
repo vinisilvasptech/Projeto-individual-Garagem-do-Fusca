@@ -16,7 +16,7 @@
 .header {
     background-color: #222;
     width: 100%;
-    height: 80px;
+    height: 100px;
 }
 
 .header .links{
@@ -28,6 +28,7 @@
 
 .header img {
     width: 200px;
+    margin-top: 10px;
 }
 
 .header a {

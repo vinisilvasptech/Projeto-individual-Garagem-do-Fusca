@@ -54,8 +54,9 @@ main {
     width: 85%; 
     margin: auto; 
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .form-posts .container {
@@ -134,59 +135,64 @@ input[type="file"] {
 .div_msg {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    align-items: center; /* Centraliza os posts na tela */
+    gap: 30px;
+    margin-top: 60px;
 }
 
 .post {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 450px;  /* Tamanho mais próximo de um post real */
     background-color: #fff;
-    margin-top: 60px;
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
-.post h4 {
-    margin-left: 5%;
+    overflow: hidden;
+    font-family: sans-serif;
+    padding: 15px;
 }
 
 .post img {
-    display: block;
-    margin: 0 auto;
-    width: 90%;
-    max-height: 400px;
+    width: 100%;
+    aspect-ratio: 5 / 5;  /* Levemente vertical como o Instagram */
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
+.post h4 {
+    padding: 16px;
+    font-size: 16px;
+    font-weight: bold;
+}
 .botao-curtir {
     font-size: 20px;
-    margin-top: 10px; 
-    border: none; 
-    background: none; 
+    border: none;
+    background: none;
     cursor: pointer;
-    text-align: left;
-    margin-left: 4%;
+    padding: 0;
 }
 
 .qtd-curtidas {
-    display: flex;
-    margin-left: 5%;
+    margin: 8px 16px;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 .titulo {
+    margin: 8px 16px 4px;
+    font-weight: 600;
     margin-top: 10px;
-    margin-left: 5%;
-    font-size: 18px;
-    font-weight: 700;
 }
 
 .descricao {
-    margin-left: 5%;
+    margin: 0 16px 8px;
+    font-size: 14px;
     color: #444;
 }
 
 .data {
-    margin-left: 5%;
-    margin-bottom: 10px;
+    margin: 0 16px 12px;
+    font-size: 12px;
+    color: #999;
 }

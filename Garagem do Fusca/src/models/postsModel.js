@@ -16,7 +16,7 @@ function listar() {
     p.titulo,
     p.descricao,
     p.url_imagem,
-    p.dt_postagem,
+    DATE_FORMAT(p.dt_postagem, '%d/%m/%Y %H:%i') AS data_formatada,
     u.nome
     FROM postagem p
     JOIN usuario u

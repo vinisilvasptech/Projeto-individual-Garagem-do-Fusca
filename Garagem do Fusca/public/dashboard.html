@@ -16,7 +16,9 @@
     <div class="container">
       <div class="conteudo-principal">
         <img src="./assets/imgs/logo.png" id="logo">
-        <span>@admin</span>
+        <span>@admin-vinicius</span>
+        <a href="./dashboard-usuario.html">Métricas usuários</a>
+        <a href="./dashboard.html">Métricas postagens</a>
       </div>
       <a href="./index.html" class="botao_sair">Sair</a>
     </div>
@@ -141,130 +143,84 @@
       });
 
   };
+function gerarGrafico({ idCanvas, tipo, dados, campoLabel, campoValor, titulo, cor }) {
+  const labels = dados.map(item => {
+    const data = new Date(item[campoLabel]);
+    return `${data.getDate().toString().padStart(2, '0')}/${(data.getMonth()+1).toString().padStart(2, '0')}`;
+  });
 
-  fetch("/posts/evolucao") // sua rota do controller
-    .then(res => res.json())
-    .then(dados => {
-      // Extrai as datas e quantidades
-      const labels = dados.map(item => item.data);
-      const valores = dados.map(item => item.quantidade);
+  const valores = dados.map(item => item[campoValor]);
 
-      const ctx = document.getElementById("graficoPostagens").getContext("2d");
-      new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: labels,
-          datasets: [{
-            label: "Postagens por dia",
-            data: valores,
-            borderColor: "#222222",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            tension: 0.3,
-            fill: true
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Evolução das Postagens por Dia',
-              font: {
-                size: 18
-              },
-              padding: {
-                top: 10,
-                bottom: 30
-              }
-            }
-          },
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: 'Data'
-              },
-              grid: {
-                display: false
-              }
-            },
-            y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: 'Quantidade de Postagens'
-              },
-              ticks: {
-                stepSize: 1,
-                precision: 0 // Garante números inteiros sem casas decimais
-              },
-            }
-          }
+  new Chart(document.getElementById(idCanvas).getContext("2d"), {
+    type: tipo,
+    data: {
+      labels: labels,
+      datasets: [{
+        label: titulo,
+        data: valores,
+        backgroundColor: cor.bg,
+        borderColor: cor.border,
+        borderWidth: 1,
+        tension: tipo === "line" ? 0.3 : 0,
+        fill: tipo === "line"
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: titulo,
+          font: { size: 18 },
+          padding: { top: 10, bottom: 30 }
         }
-      });
-    })
-    .catch(err => {
-      console.error("Erro ao carregar gráfico:", err);
-    });
-
-
-
-  fetch("/curtidas/curtidasPorDia")
-  .then(res => res.json())
-  .then(dados => {
-    const labels = dados.map(item => {
-      // formata data no formato 'DD/MM'
-      const data = new Date(item.data);
-      return `${data.getDate().toString().padStart(2, '0')}/${(data.getMonth()+1).toString().padStart(2, '0')}`;
-    });
-
-    const valores = dados.map(item => item.total_curtidas);
-
-    const ctx = document.getElementById("graficoCurtidas").getContext("2d");
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: labels,
-        datasets: [{
-          label: "Curtidas por dia",
-          data: valores,
-          backgroundColor: "rgba(255, 99, 132, 0.7)",
-          borderColor: "rgba(255, 99, 132, 1)",
-          borderWidth: 1
-        }]
       },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              stepSize: 1,
-              precision: 0
-            },
-            title: {
-              display: true,
-              text: "Número de Curtidas"
-            }
-          },
-          x: {
-            title: {
-              display: true,
-              text: "Data"
-            }
-          }
+      scales: {
+        x: {
+          title: { display: true, text: "Data" },
+          grid: { display: false }
         },
-        plugins: {
-          title: {
-            display: true,
-            text: "Curtidas nos últimos 7 dias",
-            font: { size: 18 }
-          }
+        y: {
+          beginAtZero: true,
+          ticks: { stepSize: 1, precision: 0 },
+          title: { display: true, text: "Quantidade" }
         }
       }
+    }
+  });
+}
+
+// Gráfico de postagens
+fetch("/posts/evolucao")
+  .then(res => res.json())
+  .then(dados => {
+    gerarGrafico({
+      idCanvas: "graficoPostagens",
+      tipo: "line",
+      dados,
+      campoLabel: "data",
+      campoValor: "quantidade",
+      titulo: "Evolução das Postagens nos últimos 7 dias",
+      cor: { bg: "rgba(0, 0, 0, 0.5)", border: "#222222" }
     });
   })
-  .catch(err => console.error("Erro ao carregar gráfico de curtidas:", err));
+  .catch(err => console.error("Erro no gráfico de postagens:", err));
+
+// Gráfico de curtidas
+fetch("/curtidas/curtidasPorDia")
+  .then(res => res.json())
+  .then(dados => {
+    gerarGrafico({
+      idCanvas: "graficoCurtidas",
+      tipo: "bar",
+      dados,
+      campoLabel: "data",
+      campoValor: "total_curtidas",
+      titulo: "Curtidas nos últimos 7 dias",
+      cor: { bg: "rgba(255, 99, 132, 0.7)", border: "rgba(255, 99, 132, 1)" }
+    });
+  })
+  .catch(err => console.error("Erro no gráfico de curtidas:", err));
 
 
 </script>

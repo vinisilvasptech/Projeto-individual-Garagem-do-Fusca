@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard do sistema</title>
+  <link rel="stylesheet" href="./css/dashboard_usuarios.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <div class="menu-lateral">
+    <div class="container">
+      <div class="conteudo-principal">
+        <img src="./assets/imgs/logo.png" id="logo">
+        <span>@admin-vinicius</span>
+        <a href="./dashboard-usuario.html">Métricas usuários</a>
+        <a href="./dashboard.html">Métricas postagens</a>
+      </div>
+      <a href="./index.html" class="botao_sair">Sair</a>
+    </div>
+  </div>
+
+  <main>
+    <span class="titulo">Dashboard Garagem do fusca</span>
+    <div class="kpis">
+      <div class="container">
+        <div class="card">
+          <div class="info">
+            <span class="titulo">Total de Usuários</span>
+            <span class="dado" id="kpi-total-usuarios"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="info">
+            <span class="titulo">Usuários Ativos nos Últimos 7 Dias</span>
+            <span class="dado" id="kpi-ativos"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="info">
+            <span class="titulo">Média de Curtidas por Usuário</span>
+            <span class="dado" id="kpi-media-curtidas"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="info">
+            <span class="titulo">Média de Posts por Usuário</span>
+            <span class="dado" id="kpis-media-postagens"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabela">
+      <h2>Lista de Usuários</h2>
+      <div class="tabela-container">
+        <table id="tabela-usuarios">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Conteúdo será inserido com JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function carregarKPIs() {
+      fetch('/usuarios/total-usuarios')
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('kpi-total-usuarios').innerText = data.total;
+        });
+
+      fetch('/usuarios/usuarios-ativos')
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('kpi-ativos').innerText = data.total_ativos_7dias;
+        });
+
+      fetch('/usuarios/totais-postagens-curtidas')
+        .then(res => res.json())
+        .then(data => {
+          const mediaCurtidas = (data.total_curtidas / data.total_usuarios).toFixed(2);
+          const mediaPostagens = (data.total_postagens / data.total_usuarios).toFixed(2);
+
+          document.getElementById('kpi-media-curtidas').innerText = mediaCurtidas;
+          document.getElementById('kpis-media-postagens').innerText = mediaPostagens;
+        });
+    }
+
+    fetch("/usuarios/listar")
+      .then(res => res.json())
+      .then(dados => {
+        const corpoTabela = document.querySelector("#tabela-usuarios tbody");
+        corpoTabela.innerHTML = "";
+
+        dados.forEach(usuario => {
+          const linha = `
+            <tr>
+              <td>${usuario.id}</td>
+              <td>${usuario.nome}</td>
+              <td>${usuario.email}</td>
+            </tr>
+          `;
+          corpoTabela.innerHTML += linha;
+        });
+      })
+      .catch(erro => {
+        console.error("Erro ao carregar usuários:", erro);
+      });
+
+    window.onload = carregarKPIs;
+
+    fetch("/curtidas/curtidasPorDia")
+      .then(res => res.json())
+      .then(dados => {
+        const labels = dados.map(item => {
+          const data = new Date(item.data);
+          return `${data.getDate().toString().padStart(2, '0')}/${(data.getMonth() + 1).toString().padStart(2, '0')}`;
+        });
+
+        const valores = dados.map(item => item.total_curtidas);
+
+        const ctx = document.getElementById("graficoCurtidas").getContext("2d");
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: labels,
+            datasets: [{
+              label: "Curtidas por dia",
+              data: valores,
+              backgroundColor: "rgba(255, 99, 132, 0.7)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
+                  precision: 0
+                },
+                title: {
+                  display: true,
+                  text: "Número de Curtidas"
+                }
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: "Data"
+                }
+              }
+            },
+            plugins: {
+              title: {
+                display: true,
+                text: "Curtidas nos últimos 7 dias",
+                font: { size: 18 }
+              }
+            }
+          }
+        });
+      })
+      .catch(err => console.error("Erro ao carregar gráfico de curtidas:", err));
+  </script>
+</body>
+
+</html>

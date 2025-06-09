@@ -104,21 +104,43 @@ main {
     font-size: 18px;
 }
 
-.graficos .container {
+.tabela {
+    margin-top: 50px;
+}
+
+.tabela h2 {
     display: flex;
-    flex-direction: row;
-    margin-top: 40px;
-    gap: 30px;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
-.graficos .card-graficos {
-    width: 530px;
-    height: 350px;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-}
+.tabela-container {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
 
+    #tabela-usuarios {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
+    #tabela-usuarios th {
+      background-color: #1e88e5;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
 
+    #tabela-usuarios th,
+    #tabela-usuarios td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    #tabela-usuarios tbody tr:hover {
+      background-color: #f9f9f9;
+    }

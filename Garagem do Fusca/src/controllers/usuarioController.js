@@ -77,7 +77,48 @@ function cadastrar(req, res) {
     }
 }
 
+
+function totalUsuarios(req, res) {
+    usuarioModel.totalUsuarios()
+        .then(resultado => res.json(resultado[0]))
+        .catch(erro => {
+            console.log("Erro ao buscar total de usuários:", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function usuariosAtivos(req, res) {
+    usuarioModel.usuariosAtivos()
+        .then(resultado => res.json(resultado[0]))
+        .catch(erro => {
+            console.log("Erro ao buscar usuários ativos:", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function totaisPostagensCurtidas(req, res) {
+    usuarioModel.totalPostagensCurtidas()
+        .then(resultado => res.json(resultado[0]))
+        .catch(erro => {
+            console.log("Erro ao buscar totais de postagens e curtidas:", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function listarUsuarios(req, res) {
+    usuarioModel.listarUsuarios()
+        .then(resultado => res.json(resultado))
+        .catch(erro => {
+            console.log("Erro ao listar usuários:", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
 module.exports = {
     autenticar,
-    cadastrar
-}
+    cadastrar,
+    totalUsuarios,
+    usuariosAtivos,
+    totaisPostagensCurtidas,
+    listarUsuarios
+};
